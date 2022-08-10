@@ -3,6 +3,8 @@ from tkinter import E
 
 class Memory:
     def __init__(self, num_bytes):
+        if num_bytes <=0:
+            num_bytes = 256
         self.memory = bytearray(num_bytes)
 
     def addressExists(self, address):
