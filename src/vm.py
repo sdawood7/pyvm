@@ -13,21 +13,21 @@ cpu.memory.setUint8(i, Instruction.MOV)
 i+=1
 cpu.memory.setUint8(i, r1)
 i+=1
-cpu.memory.setUint8(i, 0x12)
+cpu.memory.setUint8(i, 0x01)
 i+=1
-cpu.memory.setUint8(i, 0x34)
+cpu.memory.setUint8(i, 0x12)
 i+=1
 
 cpu.memory.setUint8(i, Instruction.MOV)
 i+=1
 cpu.memory.setUint8(i, r2)
 i+=1
-cpu.memory.setUint8(i, 0xab)
+cpu.memory.setUint8(i, 0x00)
 i+=1
-cpu.memory.setUint8(i, 0xcd)
+cpu.memory.setUint8(i, 0x04)
 i+=1
 
-cpu.memory.setUint8(i, Instruction.ADD)
+cpu.memory.setUint8(i, Instruction.RSHFT)
 i+=1
 cpu.memory.setUint8(i, r3)
 i+=1

@@ -125,7 +125,7 @@ class CPU:
                 r2Val = self.getRegisterValue(self.registerNames[int(r2 / 2)])
 
 
-                self.setRegisterValue(rd, r1Val / r2Val)
+                self.setRegisterValue(rd, int(r1Val / r2Val))
                 return 1
             case Instruction.DIVI:
                 return 1
