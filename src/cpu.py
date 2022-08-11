@@ -21,10 +21,10 @@ class CPU:
             raise Exception("Register name: {} not found".format(name))
         return self.registerDict[name]
 
-    def getRegisterValue(self, name):
-        if name not in self.registerNames:
-            raise Exception("Register name: {} not found".format(name))
-        return self.registers.getUint16(self.registerDict[name])
+    def getRegisterValue(self, index):
+        if not self.registers.addressExists(index):
+            raise Exception("Register index: {} not found".format(index))
+        return self.registers.getUint16(index)
 
     def setRegisterValue(self, index, value):
         if not self.registers.addressExists(index):
@@ -33,7 +33,7 @@ class CPU:
 
     def printCPUState(self):
         for name in self.registerDict:
-            print("{} : {}".format(name, hex(self.getRegisterValue(name))))
+            print("{} : {}".format(name, hex(self.getRegisterValue(self.getRegisterIndex(name)))))
 
     def writeToMemory(self, address, value):
         self.memory.setUint16(address, value)
@@ -42,7 +42,7 @@ class CPU:
         return self.memory.getUint16(address)
 
     def fetch(self):
-        ip_value = self.getRegisterValue('ip')
+        ip_value = self.getRegisterValue(self.getRegisterIndex('ip'))
         instruction = self.memory.getUint8(ip_value)
         ip_value += 1
         self.setRegisterValue(self.getRegisterIndex('ip'), (ip_value))
@@ -50,7 +50,7 @@ class CPU:
         return instruction
 
     def fetchWord(self):
-        ip_value = self.getRegisterValue('ip')
+        ip_value = self.getRegisterValue(self.getRegisterIndex('ip'))
         instruction = self.memory.getUint16(ip_value)
         ip_value += 2
         self.setRegisterValue(self.getRegisterIndex('ip'), (ip_value))
@@ -82,8 +82,8 @@ class CPU:
                 r1 = self.fetch()
                 r2 = self.fetch()
 
-                r1Val = self.getRegisterValue(self.registerNames[int(r1 / 2)])
-                r2Val = self.getRegisterValue(self.registerNames[int(r2 / 2)])
+                r1Val = self.getRegisterValue(r1)
+                r2Val = self.getRegisterValue(r2)
 
 
                 self.setRegisterValue(rd, r1Val + r2Val)
@@ -95,8 +95,8 @@ class CPU:
                 r1 = self.fetch()
                 r2 = self.fetch()
 
-                r1Val = self.getRegisterValue(self.registerNames[int(r1 / 2)])
-                r2Val = self.getRegisterValue(self.registerNames[int(r2 / 2)])
+                r1Val = self.getRegisterValue(r1)
+                r2Val = self.getRegisterValue(r2)
 
 
                 self.setRegisterValue(rd, r1Val - r2Val)
@@ -108,8 +108,8 @@ class CPU:
                 r1 = self.fetch()
                 r2 = self.fetch()
 
-                r1Val = self.getRegisterValue(self.registerNames[int(r1 / 2)])
-                r2Val = self.getRegisterValue(self.registerNames[int(r2 / 2)])
+                r1Val = self.getRegisterValue(r1)
+                r2Val = self.getRegisterValue(r2)
 
 
                 self.setRegisterValue(rd, r1Val * r2Val)
@@ -121,8 +121,8 @@ class CPU:
                 r1 = self.fetch()
                 r2 = self.fetch()
 
-                r1Val = self.getRegisterValue(self.registerNames[int(r1 / 2)])
-                r2Val = self.getRegisterValue(self.registerNames[int(r2 / 2)])
+                r1Val = self.getRegisterValue(r1)
+                r2Val = self.getRegisterValue(r2)
 
 
                 self.setRegisterValue(rd, int(r1Val / r2Val))
@@ -134,8 +134,8 @@ class CPU:
                 r1 = self.fetch()
                 r2 = self.fetch()
 
-                r1Val = self.getRegisterValue(self.registerNames[int(r1 / 2)])
-                r2Val = self.getRegisterValue(self.registerNames[int(r2 / 2)])
+                r1Val = self.getRegisterValue(r1)
+                r2Val = self.getRegisterValue(r2)
 
 
                 self.setRegisterValue(rd, r1Val % r2Val)
@@ -148,8 +148,8 @@ class CPU:
                 r1 = self.fetch()
                 r2 = self.fetch()
 
-                r1Val = self.getRegisterValue(self.registerNames[int(r1 / 2)])
-                r2Val = self.getRegisterValue(self.registerNames[int(r2 / 2)])
+                r1Val = self.getRegisterValue(r1)
+                r2Val = self.getRegisterValue(r2)
 
 
                 self.setRegisterValue(rd, r1Val & r2Val)
@@ -161,8 +161,8 @@ class CPU:
                 r1 = self.fetch()
                 r2 = self.fetch()
 
-                r1Val = self.getRegisterValue(self.registerNames[int(r1 / 2)])
-                r2Val = self.getRegisterValue(self.registerNames[int(r2 / 2)])
+                r1Val = self.getRegisterValue(r1)
+                r2Val = self.getRegisterValue(r2)
 
 
                 self.setRegisterValue(rd, r1Val | r2Val)
@@ -174,8 +174,8 @@ class CPU:
                 r1 = self.fetch()
                 r2 = self.fetch()
 
-                r1Val = self.getRegisterValue(self.registerNames[int(r1 / 2)])
-                r2Val = self.getRegisterValue(self.registerNames[int(r2 / 2)])
+                r1Val = self.getRegisterValue(r1)
+                r2Val = self.getRegisterValue(r2)
 
 
                 self.setRegisterValue(rd, r1Val ^ r2Val)
@@ -187,8 +187,8 @@ class CPU:
                 r1 = self.fetch()
                 r2 = self.fetch()
 
-                r1Val = self.getRegisterValue(self.registerNames[int(r1 / 2)])
-                r2Val = self.getRegisterValue(self.registerNames[int(r2 / 2)])
+                r1Val = self.getRegisterValue(r1)
+                r2Val = self.getRegisterValue(r2)
 
 
                 self.setRegisterValue(rd, r1Val << r2Val)
@@ -200,8 +200,8 @@ class CPU:
                 r1 = self.fetch()
                 r2 = self.fetch()
 
-                r1Val = self.getRegisterValue(self.registerNames[int(r1 / 2)])
-                r2Val = self.getRegisterValue(self.registerNames[int(r2 / 2)])
+                r1Val = self.getRegisterValue(r1)
+                r2Val = self.getRegisterValue(r2)
 
 
                 self.setRegisterValue(rd, r1Val >> r2Val)
