@@ -33,7 +33,7 @@ class CPU:
 
     def printCPUState(self):
         for name in self.registerDict:
-            print("{} : {}".format(name, hex(self.getRegisterValue(self.getRegisterIndex(name)))))
+            print("{} : {}".format(name, hex(self.getRegisterValue(self.getRegisterIndex(name)))[2:].zfill(4)))
 
     def writeToMemory(self, address, value):
         self.memory.setUint16(address, value)
