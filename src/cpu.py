@@ -60,12 +60,42 @@ class CPU:
     def execute(self, instruction):
         match instruction:
             case Instruction.LW:
+                rd = self.fetch()
+                address = self.fetchWord()
+
+                word_from_memory = self.readFromMemory(address)
+
+                self.setRegisterValue(rd, word_from_memory)
+
                 return 1
             case Instruction.LWR:
+                rd = self.fetch()
+                rs = self.fetch()
+
+                address = self.getRegisterValue(rs)
+                word_from_memory = self.readFromMemory(address)
+
+                self.setRegisterValue(rd, word_from_memory)
+
                 return 1
             case Instruction.SW:
+                rs = self.fetch()
+                address = self.fetchWord()
+
+                word_to_memory = self.getRegisterValue(rs)
+
+                self.writeToMemory(address, word_to_memory)
+
                 return 1
             case Instruction.SWR:
+                rs = self.fetch()
+                rd = self.fetch()
+
+                address = self.getRegisterValue(rd)
+                word_to_memory = self.getRegisterValue(rs)
+
+                self.writeToMemory(address, word_to_memory)
+
                 return 1
             case Instruction.MOV:
                 rd = self.fetch()
