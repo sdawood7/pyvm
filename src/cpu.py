@@ -115,7 +115,6 @@ class CPU:
                 r1Val = self.getRegisterValue(r1)
                 r2Val = self.getRegisterValue(r2)
 
-
                 self.setRegisterValue(rd, r1Val + r2Val)
                 return 1
             case Instruction.ADDI:
@@ -127,7 +126,6 @@ class CPU:
 
                 r1Val = self.getRegisterValue(r1)
                 r2Val = self.getRegisterValue(r2)
-
 
                 self.setRegisterValue(rd, r1Val - r2Val)
                 return 1
@@ -141,7 +139,6 @@ class CPU:
                 r1Val = self.getRegisterValue(r1)
                 r2Val = self.getRegisterValue(r2)
 
-
                 self.setRegisterValue(rd, r1Val * r2Val)
                 return 1
             case Instruction.MULTI:
@@ -154,7 +151,6 @@ class CPU:
                 r1Val = self.getRegisterValue(r1)
                 r2Val = self.getRegisterValue(r2)
 
-
                 self.setRegisterValue(rd, int(r1Val / r2Val))
                 return 1
             case Instruction.DIVI:
@@ -166,7 +162,6 @@ class CPU:
 
                 r1Val = self.getRegisterValue(r1)
                 r2Val = self.getRegisterValue(r2)
-
 
                 self.setRegisterValue(rd, r1Val % r2Val)
                 return 1
@@ -181,7 +176,6 @@ class CPU:
                 r1Val = self.getRegisterValue(r1)
                 r2Val = self.getRegisterValue(r2)
 
-
                 self.setRegisterValue(rd, r1Val & r2Val)
                 return 1
             case Instruction.ANDI:
@@ -193,7 +187,6 @@ class CPU:
 
                 r1Val = self.getRegisterValue(r1)
                 r2Val = self.getRegisterValue(r2)
-
 
                 self.setRegisterValue(rd, r1Val | r2Val)
                 return 1
@@ -207,7 +200,6 @@ class CPU:
                 r1Val = self.getRegisterValue(r1)
                 r2Val = self.getRegisterValue(r2)
 
-
                 self.setRegisterValue(rd, r1Val ^ r2Val)
                 return 1
             case Instruction.XORI:
@@ -220,7 +212,6 @@ class CPU:
                 r1Val = self.getRegisterValue(r1)
                 r2Val = self.getRegisterValue(r2)
 
-
                 self.setRegisterValue(rd, r1Val << r2Val)
                 return 1
             case Instruction.LSHFTI:
@@ -232,7 +223,6 @@ class CPU:
 
                 r1Val = self.getRegisterValue(r1)
                 r2Val = self.getRegisterValue(r2)
-
 
                 self.setRegisterValue(rd, r1Val >> r2Val)
                 return 1
