@@ -59,6 +59,7 @@ class CPU:
 
     def execute(self, instruction):
         match instruction:
+            # Register/Memory manipulation
             case Instruction.LW:
                 rd = self.fetch()
                 address = self.fetchWord()
@@ -109,6 +110,7 @@ class CPU:
 
                 return 1
 
+            # Arithmetic
             case Instruction.ADD:
                 rd = self.fetch()
                 r1 = self.fetch()
@@ -170,6 +172,7 @@ class CPU:
             case Instruction.MODI:
                 return 1
             
+            # Logical Operands
             case Instruction.AND:
                 rd = self.fetch()
                 r1 = self.fetch()
@@ -231,6 +234,7 @@ class CPU:
             case Instruction.RSHFTI:
                 return 1
 
+            # Instruction Pointer Manipulation
             case Instruction.JR:
                 return 1
             case Instruction.JI:
