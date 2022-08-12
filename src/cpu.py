@@ -235,6 +235,8 @@ class CPU:
                 return 1
             case Instruction.JI:
                 return 1
+            case Instruction.JAL:
+                return 1
             case Instruction.BEQ:
                 return 1
             case Instruction.BNE:
