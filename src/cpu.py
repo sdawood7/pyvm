@@ -236,8 +236,21 @@ class CPU:
 
             # Instruction Pointer Manipulation
             case Instruction.JR:
+                rs = self.fetch()
+                
+                address = self.getRegisterValue(rs)
+                ip_index = self.getRegisterIndex('ip')
+
+                self.setRegisterValue(ip_index, address)
+
                 return 1
             case Instruction.JI:
+                address = self.fetchWord()
+
+                ip_index = self.getRegisterIndex('ip')
+
+                self.setRegisterValue(ip_index, address)
+
                 return 1
             case Instruction.JAL:
                 return 1
