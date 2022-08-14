@@ -42,19 +42,19 @@ class CPU:
         return self.memory.getUint16(address)
 
     def fetch(self):
-        ip_value = self.getRegisterValue(self.getRegisterIndex('ip'))
+        ip_reg = self.getRegisterIndex('ip')
+        ip_value = self.getRegisterValue(ip_reg)
         instruction = self.memory.getUint8(ip_value)
         ip_value += 1
-        self.setRegisterValue(self.getRegisterIndex('ip'), (ip_value))
-        print("Instruction Pointer is now at {}".format(ip_value))
+        self.setRegisterValue(ip_reg, ip_value)
         return instruction
 
     def fetchWord(self):
-        ip_value = self.getRegisterValue(self.getRegisterIndex('ip'))
+        ip_reg = self.getRegisterIndex('ip')
+        ip_value = self.getRegisterValue(ip_reg)
         instruction = self.memory.getUint16(ip_value)
         ip_value += 2
-        self.setRegisterValue(self.getRegisterIndex('ip'), (ip_value))
-        print("Instruction Pointer is now at {}".format(ip_value))
+        self.setRegisterValue(ip_reg, ip_value)
         return instruction
 
     def execute(self, instruction):
