@@ -8,6 +8,9 @@ class Instruction(IntEnum):
     MOV     = 0x14 # mov    rd, 0x0000      # Move literal into register
     SWP     = 0x15 # swp    r1, r2          # Swap two registers values
 
+    PSH     = 0x30 # psh    rs
+    POP     = 0x31 # pop    rd
+
     ADD     = 0x50 # add    r1, r2      # Add two registers
     ADDI    = 0x51 # addi   r1, 0x0000  # Add register and immediate value
     SUB     = 0x52 # sub    r1, r2      # Subtract first register by second register
