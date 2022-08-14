@@ -112,124 +112,144 @@ class CPU:
 
             # Arithmetic
             case Instruction.ADD:
-                rd = self.fetch()
                 r1 = self.fetch()
                 r2 = self.fetch()
 
                 r1Val = self.getRegisterValue(r1)
                 r2Val = self.getRegisterValue(r2)
 
-                self.setRegisterValue(rd, r1Val + r2Val)
+                ac_reg = self.getRegisterIndex('ac')
+                val = r1Val + r2Val
+
+                self.setRegisterValue(ac_reg, val)
                 return 1
             case Instruction.ADDI:
                 return 1
             case Instruction.SUB:
-                rd = self.fetch()
                 r1 = self.fetch()
                 r2 = self.fetch()
 
                 r1Val = self.getRegisterValue(r1)
                 r2Val = self.getRegisterValue(r2)
 
-                self.setRegisterValue(rd, r1Val - r2Val)
+                ac_reg = self.getRegisterIndex('ac')
+                val = r1Val - r2Val
+
+                self.setRegisterValue(ac_reg, val)
                 return 1
             case Instruction.SUBI:
                 return 1
             case Instruction.MULT:
-                rd = self.fetch()
                 r1 = self.fetch()
                 r2 = self.fetch()
 
                 r1Val = self.getRegisterValue(r1)
                 r2Val = self.getRegisterValue(r2)
 
-                self.setRegisterValue(rd, r1Val * r2Val)
+                ac_reg = self.getRegisterIndex('ac')
+                val = r1Val * r2Val
+
+                self.setRegisterValue(ac_reg, val)
                 return 1
             case Instruction.MULTI:
                 return 1
             case Instruction.DIV:
-                rd = self.fetch()
                 r1 = self.fetch()
                 r2 = self.fetch()
 
                 r1Val = self.getRegisterValue(r1)
                 r2Val = self.getRegisterValue(r2)
 
-                self.setRegisterValue(rd, int(r1Val / r2Val))
+                ac_reg = self.getRegisterIndex('ac')
+                val = r1Val / r2Val
+
+                self.setRegisterValue(ac_reg, val)
                 return 1
             case Instruction.DIVI:
                 return 1
             case Instruction.MOD:
-                rd = self.fetch()
                 r1 = self.fetch()
                 r2 = self.fetch()
 
                 r1Val = self.getRegisterValue(r1)
                 r2Val = self.getRegisterValue(r2)
 
-                self.setRegisterValue(rd, r1Val % r2Val)
+                ac_reg = self.getRegisterIndex('ac')
+                val = r1Val % r2Val
+
+                self.setRegisterValue(ac_reg, val)
                 return 1
             case Instruction.MODI:
                 return 1
             
             # Logical Operands
             case Instruction.AND:
-                rd = self.fetch()
                 r1 = self.fetch()
                 r2 = self.fetch()
 
                 r1Val = self.getRegisterValue(r1)
                 r2Val = self.getRegisterValue(r2)
 
-                self.setRegisterValue(rd, r1Val & r2Val)
+                ac_reg = self.getRegisterIndex('ac')
+                val = r1Val & r2Val
+
+                self.setRegisterValue(ac_reg, val)
                 return 1
             case Instruction.ANDI:
                 return 1
             case Instruction.OR:
-                rd = self.fetch()
                 r1 = self.fetch()
                 r2 = self.fetch()
 
                 r1Val = self.getRegisterValue(r1)
                 r2Val = self.getRegisterValue(r2)
 
-                self.setRegisterValue(rd, r1Val | r2Val)
+                ac_reg = self.getRegisterIndex('ac')
+                val = r1Val | r2Val
+
+                self.setRegisterValue(ac_reg, val)
                 return 1
             case Instruction.ORI:
                 return 1
             case Instruction.XOR:
-                rd = self.fetch()
                 r1 = self.fetch()
                 r2 = self.fetch()
 
                 r1Val = self.getRegisterValue(r1)
                 r2Val = self.getRegisterValue(r2)
 
-                self.setRegisterValue(rd, r1Val ^ r2Val)
+                ac_reg = self.getRegisterIndex('ac')
+                val = r1Val ^ r2Val
+
+                self.setRegisterValue(ac_reg, val)
                 return 1
             case Instruction.XORI:
                 return 1
             case Instruction.LSHFT:
-                rd = self.fetch()
                 r1 = self.fetch()
                 r2 = self.fetch()
 
                 r1Val = self.getRegisterValue(r1)
                 r2Val = self.getRegisterValue(r2)
 
-                self.setRegisterValue(rd, r1Val << r2Val)
+                ac_reg = self.getRegisterIndex('ac')
+                val = r1Val << r2Val
+
+                self.setRegisterValue(ac_reg, val)
                 return 1
             case Instruction.LSHFTI:
                 return 1
             case Instruction.RSHFT:
-                rd = self.fetch()
                 r1 = self.fetch()
                 r2 = self.fetch()
 
                 r1Val = self.getRegisterValue(r1)
                 r2Val = self.getRegisterValue(r2)
 
-                self.setRegisterValue(rd, r1Val >> r2Val)
+                ac_reg = self.getRegisterIndex('ac')
+                val = r1Val >> r2Val
+
+                self.setRegisterValue(ac_reg, val)
                 return 1
             case Instruction.RSHFTI:
                 return 1
