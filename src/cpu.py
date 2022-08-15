@@ -159,6 +159,10 @@ class CPU:
                 self.setRegisterValue(rd, value)
                 
                 return 1
+            case Instruction.JAL:
+                return 1
+            case Instruction.RET:
+                return 1
 
             # Arithmetic
             case Instruction.ADD:

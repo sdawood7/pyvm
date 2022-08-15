@@ -11,6 +11,8 @@ class Instruction(IntEnum):
     PSH     = 0x30 # psh    rs
     PSHI    = 0x31 # psh    0x0000
     POP     = 0x32 # pop    rd
+    JAL     = 0x33 # jal
+    RET     = 0x34 # ret
 
     ADD     = 0x50 # add    r1, r2      # Add two registers
     ADDI    = 0x51 # addi   r1, 0x0000  # Add register and immediate value
@@ -36,12 +38,11 @@ class Instruction(IntEnum):
 
     JR      = 0x80 # jr     rs              # Jump instruction pointer to value specified by register source
     JI      = 0x81 # ji     0x0000          # Jump instruction pointer to immediate value
-    JAL     = 0x82 # jal
-    BEQ     = 0x83 # beq    
-    BNE     = 0x84 # bne    
-    BLT     = 0x85 # blt    
-    BLE     = 0x86 # ble    
-    BGT     = 0x87 # bgt    
-    BGE     = 0x88 # bge    
+    BEQ     = 0x82 # beq
+    BNE     = 0x83 # bne    
+    BLT     = 0x84 # blt    
+    BLE     = 0x85 # ble    
+    BGT     = 0x86 # bgt    
+    BGE     = 0x87 # bge    
 
     HLT     = 0xFF # hlt                    # Halt execution of program
