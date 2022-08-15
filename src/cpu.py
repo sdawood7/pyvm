@@ -22,32 +22,32 @@ class CPU:
 
         self.setRegisterValue(self.getRegisterIndex('sp'), self.MAX_STACK_POINTER) 
 
-    def getRegisterIndex(self, name):
+    def getRegisterIndex(self, name) -> int:
         if name not in self.registerNames:
             raise Exception("Register name: {} not found".format(name))
         return self.registerDict[name]
 
-    def getRegisterValue(self, index):
+    def getRegisterValue(self, index) -> int:
         if not self.registers.addressExists(index):
             raise Exception("Register index: {} not found".format(index))
         return self.registers.getUint16(index)
 
-    def setRegisterValue(self, index, value):
+    def setRegisterValue(self, index, value) -> None:
         if not self.registers.addressExists(index):
             raise Exception("Register index: {} not found".format(index))
-        return self.registers.setUint16(index, value)
+        self.registers.setUint16(index, value)
 
-    def printCPUState(self):
+    def printCPUState(self) -> None:
         for name in self.registerDict:
             print("{} : {}".format(name, hex(self.getRegisterValue(self.getRegisterIndex(name)))[2:].zfill(4)))
 
-    def writeToMemory(self, address, value):
+    def writeToMemory(self, address, value) -> None:
         self.memory.setUint16(address, value)
 
-    def readFromMemory(self, address):
+    def readFromMemory(self, address) -> int:
         return self.memory.getUint16(address)
 
-    def push(self, value):
+    def push(self, value) -> None:
         stack_pointer = self.getRegisterIndex('sp')
         address = self.getRegisterValue(stack_pointer)
 
@@ -67,7 +67,7 @@ class CPU:
 
         return self.readFromMemory(address)
 
-    def fetch(self):
+    def fetch(self) -> int:
         ip_reg = self.getRegisterIndex('ip')
         ip_value = self.getRegisterValue(ip_reg)
         instruction = self.memory.getUint8(ip_value)
@@ -75,7 +75,7 @@ class CPU:
         self.setRegisterValue(ip_reg, ip_value)
         return instruction
 
-    def fetchWord(self):
+    def fetchWord(self) -> int:
         ip_reg = self.getRegisterIndex('ip')
         ip_value = self.getRegisterValue(ip_reg)
         instruction = self.memory.getUint16(ip_value)
@@ -83,7 +83,7 @@ class CPU:
         self.setRegisterValue(ip_reg, ip_value)
         return instruction
 
-    def execute(self, instruction):
+    def execute(self, instruction) -> int:
         match instruction:
             # Register/Memory manipulation
             case Instruction.LW:
@@ -341,12 +341,12 @@ class CPU:
                 return 0
 
 
-    def step(self):
+    def step(self) -> int:
         instruction = self.fetch()
         print("Executing instruction: {}".format(instruction))
         return self.execute(instruction)
 
-    def run(self):
+    def run(self) -> None:
         halt = 1
         while halt != 0:
             halt = self.step()
