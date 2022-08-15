@@ -325,8 +325,6 @@ class CPU:
                 self.setRegisterValue(ip_index, address)
 
                 return 1
-            case Instruction.JAL:
-                return 1
             case Instruction.BEQ:
                 return 1
             case Instruction.BNE:
