@@ -135,9 +135,11 @@ class CPU:
                 r1 = self.fetch()
                 r2 = self.fetch()
 
-                tmpVal = self.getRegisterValue(r1)
-                self.setRegisterValue(r1, self.getRegisterValue(r2))
-                self.setRegisterValue(r2, tmpVal)
+                self.push(self.getRegisterValue(r1))
+                self.push(self.getRegisterValue(r2))
+
+                self.setRegisterValue(r1, self.pop())
+                self.setRegisterValue(r2, self.pop())
 
                 return 1
 
