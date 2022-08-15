@@ -350,16 +350,3 @@ class CPU:
         halt = 1
         while halt != 0:
             halt = self.step()
-
-
-class CPU2:
-    def __init__(self, memory_size=256):
-        self.registerNames = [
-            'ip',
-            'r1', 'r2', 'r3', 'r4',
-            'sp', 'fp',
-        ]
-
-        self.registerValues = Memory(len(self.registerNames) * 2)
-
-        self.registerMap = {self.registerNames[i]: i*2 for i in range(len(self.registerNames))}
