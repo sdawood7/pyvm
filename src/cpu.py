@@ -47,6 +47,26 @@ class CPU:
     def readFromMemory(self, address):
         return self.memory.getUint16(address)
 
+    def push(self, value):
+        stack_pointer = self.getRegisterIndex('sp')
+        address = self.getRegisterValue(stack_pointer)
+
+        self.writeToMemory(address, value)
+
+        if address > self.MIN_STACK_POINTER: # Prevent the stack pointer from going out of bounds
+            address -= 2
+            self.setRegisterValue(stack_pointer, address) # Stack grows upwards
+
+    def pop(self) -> int:
+        stack_pointer = self.getRegisterIndex('sp')
+        address = self.getRegisterValue(stack_pointer)
+
+        if address < self.MAX_STACK_POINTER: # Prevent the stack pointer from going out of bounds
+            address += 2
+            self.setRegisterValue(stack_pointer, address)
+
+        return self.readFromMemory(address)
+
     def fetch(self):
         ip_reg = self.getRegisterIndex('ip')
         ip_value = self.getRegisterValue(ip_reg)
@@ -121,40 +141,19 @@ class CPU:
                 rs = self.fetch()
                 value = self.getRegisterValue(rs)
 
-                stack_pointer = self.getRegisterIndex('sp')
-                address = self.getRegisterValue(stack_pointer)
-
-                self.writeToMemory(address, value)
-
-                if address > self.MIN_STACK_POINTER: # Prevent the stack pointer from going out of bounds
-                    address -= 2
-                    self.setRegisterValue(stack_pointer, address) # Stack grows upwards
+                self.push(value)
 
                 return 1
             case Instruction.PSHI:
                 value = self.fetchWord()
 
-                stack_pointer = self.getRegisterIndex('sp')
-                address = self.getRegisterValue(stack_pointer)
-
-                self.writeToMemory(address, value)
-
-                if address > self.MIN_STACK_POINTER: # Prevent the stack pointer from going out of bounds
-                    address -= 2
-                    self.setRegisterValue(stack_pointer, address) # Stack grows upwards
+                self.push(value)
 
                 return 1
             case Instruction.POP:
                 rd = self.fetch()
 
-                stack_pointer = self.getRegisterIndex('sp')
-                address = self.getRegisterValue(stack_pointer)
-
-                if address < self.MAX_STACK_POINTER: # Prevent the stack pointer from going out of bounds
-                    address += 2
-                    self.setRegisterValue(stack_pointer, address)
-
-                value = self.readFromMemory(address)
+                value = self.pop()
 
                 self.setRegisterValue(rd, value)
                 
