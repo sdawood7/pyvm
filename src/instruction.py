@@ -9,7 +9,8 @@ class Instruction(IntEnum):
     SWP     = 0x15 # swp    r1, r2      # Swap two registers values
 
     PSH     = 0x30 # psh    rs
-    POP     = 0x31 # pop    rd
+    PSHI    = 0x31 # psh    0x0000
+    POP     = 0x32 # pop    rd
 
     ADD     = 0x50 # add    r1, r2      # Add two registers
     ADDI    = 0x51 # addi   r1, 0x0000  # Add register and immediate value

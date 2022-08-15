@@ -119,11 +119,24 @@ class CPU:
             # Stack Operations
             case Instruction.PSH:
                 rs = self.fetch()
+                value = self.getRegisterValue(rs)
 
                 stack_pointer = self.getRegisterIndex('sp')
                 address = self.getRegisterValue(stack_pointer)
-                
-                value = self.getRegisterValue(rs)
+
+                self.writeToMemory(address, value)
+
+                if address > self.MIN_STACK_POINTER: # Prevent the stack pointer from going out of bounds
+                    address -= 2
+                    self.setRegisterValue(stack_pointer, address) # Stack grows upwards
+
+                return 1
+            case Instruction.PSHI:
+                value = self.fetchWord()
+
+                stack_pointer = self.getRegisterIndex('sp')
+                address = self.getRegisterValue(stack_pointer)
+
                 self.writeToMemory(address, value)
 
                 if address > self.MIN_STACK_POINTER: # Prevent the stack pointer from going out of bounds
