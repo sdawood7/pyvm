@@ -67,6 +67,11 @@ class CPU:
 
         return self.readFromMemory(address)
 
+    def jump(self, address) -> None:
+        ip_index = self.getRegisterIndex('ip')
+
+        self.setRegisterValue(ip_index, address)
+
     def fetch(self) -> int:
         ip_reg = self.getRegisterIndex('ip')
         ip_value = self.getRegisterValue(ip_reg)
@@ -310,19 +315,15 @@ class CPU:
             # Instruction Pointer Manipulation
             case Instruction.JR:
                 rs = self.fetch()
-                
                 address = self.getRegisterValue(rs)
-                ip_index = self.getRegisterIndex('ip')
 
-                self.setRegisterValue(ip_index, address)
+                self.jump(address)
 
                 return 1
             case Instruction.JI:
                 address = self.fetchWord()
 
-                ip_index = self.getRegisterIndex('ip')
-
-                self.setRegisterValue(ip_index, address)
+                self.jump(address)
 
                 return 1
             case Instruction.BEQ:
