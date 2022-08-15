@@ -16,6 +16,12 @@ class CPU:
 
         self.registerDict = {self.registerNames[i]: i * 2 for i in range(len(self.registerNames))}
 
+        self.MAX_STACK_POINTER = (memory_size - 1) - 1 # Stack pointer starts at last address, set address to 1 less than max, and subtract 1 for 0 indexing
+
+        self.MIN_STACK_POINTER = int(self.MAX_STACK_POINTER / 2)
+
+        self.setRegisterValue(self.getRegisterIndex('sp'), self.MAX_STACK_POINTER) 
+
     def getRegisterIndex(self, name):
         if name not in self.registerNames:
             raise Exception("Register name: {} not found".format(name))
@@ -108,6 +114,37 @@ class CPU:
                 self.setRegisterValue(r1, self.getRegisterValue(r2))
                 self.setRegisterValue(r2, tmpVal)
 
+                return 1
+
+            # Stack Operations
+            case Instruction.PSH:
+                rs = self.fetch()
+
+                stack_pointer = self.getRegisterIndex('sp')
+                address = self.getRegisterValue(stack_pointer)
+                
+                value = self.getRegisterValue(rs)
+                self.writeToMemory(address, value)
+
+                if address > self.MIN_STACK_POINTER: # Prevent the stack pointer from going out of bounds
+                    address -= 2
+                    self.setRegisterValue(stack_pointer, address) # Stack grows upwards
+
+                return 1
+            case Instruction.POP:
+                rd = self.fetch()
+
+                stack_pointer = self.getRegisterIndex('sp')
+                address = self.getRegisterValue(stack_pointer)
+
+                if address < self.MAX_STACK_POINTER: # Prevent the stack pointer from going out of bounds
+                    address += 2
+                    self.setRegisterValue(stack_pointer, address)
+
+                value = self.readFromMemory(address)
+
+                self.setRegisterValue(rd, value)
+                
                 return 1
 
             # Arithmetic
