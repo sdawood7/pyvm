@@ -342,6 +342,9 @@ class CPU:
         elif instruction == Instruction.HLT:
             return 0
 
+        # Default
+        else:
+            raise Exception("Unknown instruction given: {}".format(instruction))
 
     def step(self) -> int:
         instruction = self.fetch()
