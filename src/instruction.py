@@ -1,12 +1,12 @@
 from enum import IntEnum
 
 class Instruction(IntEnum):
-    LW      = 0x10 # lwr    rd, rs      # Loads word from memory address specified by register source into register destination
-    SW      = 0x11 # swr    rs, rd      # Stores word from register source into memory address specified by register destination
+    LW      = 0x10 # lw     rd, rs      # Loads word from memory address specified by register source into register destination
+    SW      = 0x11 # sw     rs, rd      # Stores word from register source into memory address specified by register destination
     SWP     = 0x12 # swp    r1, r2      # Swap two registers values
 
     PSH     = 0x30 # psh    rs
-    PSHI    = 0x31 # psh    0x0000
+    PSHI    = 0x31 # pshi   0x0000
     POP     = 0x32 # pop    rd
     JAL     = 0x33 # jal
     RET     = 0x34 # ret
