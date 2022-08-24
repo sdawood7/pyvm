@@ -92,14 +92,6 @@ class CPU:
         # Register/Memory manipulation
         if instruction == Instruction.LW:
             rd = self.fetch()
-            address = self.fetchWord()
-
-            word_from_memory = self.readFromMemory(address)
-
-            self.setRegisterValue(rd, word_from_memory)
-            return 1
-        elif instruction == Instruction.LWR:
-            rd = self.fetch()
             rs = self.fetch()
 
             address = self.getRegisterValue(rs)
@@ -109,26 +101,12 @@ class CPU:
             return 1
         elif instruction == Instruction.SW:
             rs = self.fetch()
-            address = self.fetchWord()
-
-            word_to_memory = self.getRegisterValue(rs)
-
-            self.writeToMemory(address, word_to_memory)
-            return 1
-        elif instruction == Instruction.SWR:
-            rs = self.fetch()
             rd = self.fetch()
 
             address = self.getRegisterValue(rd)
             word_to_memory = self.getRegisterValue(rs)
 
             self.writeToMemory(address, word_to_memory)
-            return 1
-        elif instruction == Instruction.MOV:
-            rd = self.fetch()
-            immediate = self.fetchWord()
-
-            self.setRegisterValue(rd, immediate)
             return 1
         elif instruction == Instruction.SWP:
             r1 = self.fetch()
