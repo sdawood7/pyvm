@@ -182,8 +182,6 @@ class CPU:
 
             self.setRegisterValue(ac_reg, val)
             return 1
-        elif instruction == Instruction.ADDI:
-            return 1
         elif instruction == Instruction.SUB:
             r1 = self.fetch()
             r2 = self.fetch()
@@ -195,8 +193,6 @@ class CPU:
             val = r1Val - r2Val
 
             self.setRegisterValue(ac_reg, val)
-            return 1
-        elif instruction == Instruction.SUBI:
             return 1
         elif instruction == Instruction.MULT:
             r1 = self.fetch()
@@ -210,8 +206,6 @@ class CPU:
 
             self.setRegisterValue(ac_reg, val)
             return 1
-        elif instruction == Instruction.MULTI:
-            return 1
         elif instruction == Instruction.DIV:
             r1 = self.fetch()
             r2 = self.fetch()
@@ -224,8 +218,6 @@ class CPU:
 
             self.setRegisterValue(ac_reg, val)
             return 1
-        elif instruction == Instruction.DIVI:
-            return 1
         elif instruction == Instruction.MOD:
             r1 = self.fetch()
             r2 = self.fetch()
@@ -237,8 +229,6 @@ class CPU:
             val = r1Val % r2Val
 
             self.setRegisterValue(ac_reg, val)
-            return 1
-        elif instruction == Instruction.MODI:
             return 1
         
         # Logical Operands
@@ -254,8 +244,6 @@ class CPU:
 
             self.setRegisterValue(ac_reg, val)
             return 1
-        elif instruction == Instruction.ANDI:
-            return 1
         elif instruction == Instruction.OR:
             r1 = self.fetch()
             r2 = self.fetch()
@@ -267,8 +255,6 @@ class CPU:
             val = r1Val | r2Val
 
             self.setRegisterValue(ac_reg, val)
-            return 1
-        elif instruction == Instruction.ORI:
             return 1
         elif instruction == Instruction.XOR:
             r1 = self.fetch()
@@ -282,8 +268,6 @@ class CPU:
 
             self.setRegisterValue(ac_reg, val)
             return 1
-        elif instruction == Instruction.XORI:
-            return 1
         elif instruction == Instruction.LSHFT:
             r1 = self.fetch()
             r2 = self.fetch()
@@ -296,8 +280,6 @@ class CPU:
 
             self.setRegisterValue(ac_reg, val)
             return 1
-        elif instruction == Instruction.LSHFTI:
-            return 1
         elif instruction == Instruction.RSHFT:
             r1 = self.fetch()
             r2 = self.fetch()
@@ -309,8 +291,6 @@ class CPU:
             val = r1Val >> r2Val
 
             self.setRegisterValue(ac_reg, val)
-            return 1
-        elif instruction == Instruction.RSHFTI:
             return 1
 
         # Instruction Pointer Manipulation
