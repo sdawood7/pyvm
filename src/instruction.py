@@ -25,16 +25,16 @@ class Instruction(IntEnum):
     MOD     = 0x58 # mod    r1, r2      # Modulo divide first register by second register
     MODI    = 0x59 # modi   r1, 0x0000  # Modulo divide register by immediate value
 
-    AND     = 0x60 # and    r1, r2      # Logical and two registers
-    ANDI    = 0x61 # andi   r1, 0x0000  # Logical and register and immediate value
-    OR      = 0x62 # or     r1, r2      # Logical or two registers
-    ORI     = 0x63 # ori    r1, 0x0000  # Logical or register and immediate value
-    XOR     = 0x64 # xor    r1, r2      # Logical xor two registers
-    XORI    = 0x65 # xori   r1, 0x0000  # Logical xor register and immediate value
-    LSHFT   = 0x66 # lshft  r1, r2      # Left shift first register by value specified in second register
-    LSHFTI  = 0x67 # lshfti r1, 0x0000  # Left shift first register by immediate value
-    RSHFT   = 0x68 # rshft  r1, r2      # Right shift first register by value specified in second register
-    RSHFTI  = 0x69 # rshfti r1, 0x0000  # Right shift first register by immediate value
+    AND     = 0x60 # and    r1, r2      # Bitwise and two registers
+    ANDI    = 0x61 # andi   r1, 0x0000  # Bitwise and register and immediate value
+    OR      = 0x62 # or     r1, r2      # Bitwise or two registers
+    ORI     = 0x63 # ori    r1, 0x0000  # Bitwise or register and immediate value
+    XOR     = 0x64 # xor    r1, r2      # Bitwise xor two registers
+    XORI    = 0x65 # xori   r1, 0x0000  # Bitwise xor register and immediate value
+    LSHFT   = 0x66 # lshft  r1, r2      # Bitwise left shift first register by value specified in second register
+    LSHFTI  = 0x67 # lshfti r1, 0x0000  # Bitwise left shift first register by immediate value
+    RSHFT   = 0x68 # rshft  r1, r2      # Bitwise right shift first register by value specified in second register
+    RSHFTI  = 0x69 # rshfti r1, 0x0000  # Bitwise right shift first register by immediate value
 
     JR      = 0x80 # jr     rs              # Jump instruction pointer to value specified by register source
     JI      = 0x81 # ji     0x0000          # Jump instruction pointer to immediate value
