@@ -1,9 +1,12 @@
+from alu import ALU
 from memory import Memory
 from instruction import Instruction
 
 class CPU:
     def __init__(self, memory_size=256):
         self.memory = Memory(memory_size)
+
+        self.alu = ALU()
 
         self.registerNames = [
             'ip', 'lr', 'ac',
@@ -155,8 +158,10 @@ class CPU:
             r1Val = self.getRegisterValue(r1)
             r2Val = self.getRegisterValue(r2)
 
+            self.alu.compute('+', r1Val, r2Val)
+
             ac_reg = self.getRegisterIndex('ac')
-            val = r1Val + r2Val
+            val = self.alu.result
 
             self.setRegisterValue(ac_reg, val)
             return 1
@@ -167,8 +172,10 @@ class CPU:
             r1Val = self.getRegisterValue(r1)
             r2Val = self.getRegisterValue(r2)
 
+            self.alu.compute('-', r1Val, r2Val)
+
             ac_reg = self.getRegisterIndex('ac')
-            val = r1Val - r2Val
+            val = self.alu.result
 
             self.setRegisterValue(ac_reg, val)
             return 1
@@ -179,8 +186,10 @@ class CPU:
             r1Val = self.getRegisterValue(r1)
             r2Val = self.getRegisterValue(r2)
 
+            self.alu.compute('*', r1Val, r2Val)
+
             ac_reg = self.getRegisterIndex('ac')
-            val = r1Val * r2Val
+            val = self.alu.result
 
             self.setRegisterValue(ac_reg, val)
             return 1
@@ -191,8 +200,10 @@ class CPU:
             r1Val = self.getRegisterValue(r1)
             r2Val = self.getRegisterValue(r2)
 
+            self.alu.compute('/', r1Val, r2Val)
+
             ac_reg = self.getRegisterIndex('ac')
-            val = r1Val / r2Val
+            val = self.alu.result
 
             self.setRegisterValue(ac_reg, val)
             return 1
@@ -203,8 +214,10 @@ class CPU:
             r1Val = self.getRegisterValue(r1)
             r2Val = self.getRegisterValue(r2)
 
+            self.alu.compute('%', r1Val, r2Val)
+
             ac_reg = self.getRegisterIndex('ac')
-            val = r1Val % r2Val
+            val = self.alu.result
 
             self.setRegisterValue(ac_reg, val)
             return 1
@@ -217,8 +230,10 @@ class CPU:
             r1Val = self.getRegisterValue(r1)
             r2Val = self.getRegisterValue(r2)
 
+            self.alu.compute('&', r1Val, r2Val)
+
             ac_reg = self.getRegisterIndex('ac')
-            val = r1Val & r2Val
+            val = self.alu.result
 
             self.setRegisterValue(ac_reg, val)
             return 1
@@ -229,8 +244,10 @@ class CPU:
             r1Val = self.getRegisterValue(r1)
             r2Val = self.getRegisterValue(r2)
 
+            self.alu.compute('|', r1Val, r2Val)
+
             ac_reg = self.getRegisterIndex('ac')
-            val = r1Val | r2Val
+            val = self.alu.result
 
             self.setRegisterValue(ac_reg, val)
             return 1
@@ -241,8 +258,10 @@ class CPU:
             r1Val = self.getRegisterValue(r1)
             r2Val = self.getRegisterValue(r2)
 
+            self.alu.compute('^', r1Val, r2Val)
+
             ac_reg = self.getRegisterIndex('ac')
-            val = r1Val ^ r2Val
+            val = self.alu.result
 
             self.setRegisterValue(ac_reg, val)
             return 1
@@ -253,8 +272,10 @@ class CPU:
             r1Val = self.getRegisterValue(r1)
             r2Val = self.getRegisterValue(r2)
 
+            self.alu.compute('<<', r1Val, r2Val)
+
             ac_reg = self.getRegisterIndex('ac')
-            val = r1Val << r2Val
+            val = self.alu.result
 
             self.setRegisterValue(ac_reg, val)
             return 1
@@ -265,8 +286,22 @@ class CPU:
             r1Val = self.getRegisterValue(r1)
             r2Val = self.getRegisterValue(r2)
 
+            self.alu.compute('>>', r1Val, r2Val)
+
             ac_reg = self.getRegisterIndex('ac')
-            val = r1Val >> r2Val
+            val = self.alu.result
+
+            self.setRegisterValue(ac_reg, val)
+            return 1
+        elif instruction == Instruction.NOT:
+            r1 = self.fetch()
+
+            r1Val = self.getRegisterValue(r1)
+
+            self.alu.compute('~', r1Val)
+            
+            ac_reg = self.getRegisterIndex('ac')
+            val = self.alu.result
 
             self.setRegisterValue(ac_reg, val)
             return 1
