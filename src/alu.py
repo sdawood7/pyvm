@@ -42,7 +42,7 @@ class ALU:
         else:
             raise Exception("Unknown operator \"{}\" given".format(op))
 
-        self.setFlags()
+        setFlags()
 
         def convert2scompl(n):
             n &= 0xFFFF # Convert to 16 bit
