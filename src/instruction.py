@@ -22,6 +22,7 @@ class Instruction(IntEnum):
     XOR     = 0x62 # xor    r1, r2      # Bitwise xor two registers
     LSHFT   = 0x63 # lshft  r1, r2      # Bitwise left shift first register by value specified in second register
     RSHFT   = 0x64 # rshft  r1, r2      # Bitwise right shift first register by value specified in second register
+    NOT     = 0x65 # not    r1          # Bitwise not one register
 
     JR      = 0x80 # jr     rs          # Jump instruction pointer to value specified by register source
     JI      = 0x81 # ji     0x0000      # Jump instruction pointer to immediate value
