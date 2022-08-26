@@ -47,7 +47,7 @@ class ALU:
         def convert2scompl(n):
             n &= 0xFFFF # Convert to 16 bit
             if n >= 0x8000 and n <= 0xFFFF:
-                return -n
+                return ~n + 1
             return n
 
         def setFlags():
