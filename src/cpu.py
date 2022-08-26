@@ -299,7 +299,7 @@ class CPU:
             r1Val = self.getRegisterValue(r1)
 
             self.alu.compute('~', r1Val)
-            
+
             ac_reg = self.getRegisterIndex('ac')
             val = self.alu.result
 
@@ -321,16 +321,40 @@ class CPU:
 
             return 1
         elif instruction == Instruction.BEQ:
+            address = self.fetchWord()
+            if self.alu.zero:
+                self.jump(address)
+
             return 1
         elif instruction == Instruction.BNE:
+            address = self.fetchWord()
+            if not self.alu.zero:
+                self.jump(address)
+
             return 1
         elif instruction == Instruction.BLT:
+            address = self.fetchWord()
+            if self.alu.negative:
+                self.jump(address)
+
             return 1
         elif instruction == Instruction.BLE:
+            address = self.fetchWord()
+            if self.alu.negative or self.alu.zero:
+                self.jump(address)
+
             return 1
         elif instruction == Instruction.BGT:
+            address = self.fetchWord()
+            if not self.alu.negative:
+                self.jump(address)
+
             return 1
         elif instruction == Instruction.BGE:
+            address = self.fetchWord()
+            if not self.alu.negative or self.alu.zero:
+                self.jump(address)
+
             return 1
         elif instruction == Instruction.HLT:
             return 0
