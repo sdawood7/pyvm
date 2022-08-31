@@ -3,8 +3,16 @@ from memory import Memory
 from instruction import Instruction
 
 class CPU:
-    def __init__(self, memory_size=256):
-        self.memory = Memory(memory_size)
+    def __init__(self, memory_size=8192):
+        self.memory_size = memory_size
+
+        self.general = Memory(int(self.memory_size / 4))            # 2048 +
+        self.program = Memory(int(self.memory_size / 4))            # 2048 +
+        self.io      = Memory(int(self.memory_size / 16))           # 512  +
+        self.screen  = Memory(int(self.memory_size / 32))           # 256  +
+        self.stack   = Memory(int(((self.memory_size / 32) * 13)))  # 3328 = 8192 bytes
+
+        self.labels = {}
 
         self.alu = ALU()
 
@@ -19,11 +27,22 @@ class CPU:
 
         self.registerDict = {self.registerNames[i]: i * 2 for i in range(len(self.registerNames))}
 
-        self.MAX_STACK_POINTER = (memory_size - 1) - 1 # Stack pointer starts at last address, set address to 1 less than max, and subtract 1 for 0 indexing
+        self.SP_MAX = ((self.stack.size - 1) - 1)
 
-        self.MIN_STACK_POINTER = int(self.MAX_STACK_POINTER / 2)
+        self.setRegisterValue(self.getRegisterIndex('sp'), self.SP_MAX) # Stack pointer starts at last address, set address to 1 less than max, and subtract 1 for 0 indexing
 
-        self.setRegisterValue(self.getRegisterIndex('sp'), self.MAX_STACK_POINTER) 
+    def loadProgram(self, functions, byte_count):
+        if (byte_count + len(functions)) >= self.program.size:
+            raise Exception("Program size too large")
+
+        program_index = 0
+        for func in functions:
+            self.labels[func] = program_index
+            for byte in functions[func]:
+                print("{} : {}".format(type(byte), byte))
+                self.program.setUint8(program_index, int(byte))
+                program_index += 1
+            program_index += 1
 
     def getRegisterIndex(self, name) -> int:
         if name not in self.registerNames:
@@ -44,19 +63,13 @@ class CPU:
         for name in self.registerDict:
             print("{} : {}".format(name, hex(self.getRegisterValue(self.getRegisterIndex(name)))[2:].zfill(4)))
 
-    def writeToMemory(self, address, value) -> None:
-        self.memory.setUint16(address, value)
-
-    def readFromMemory(self, address) -> int:
-        return self.memory.getUint16(address)
-
     def push(self, value) -> None:
         stack_pointer = self.getRegisterIndex('sp')
         address = self.getRegisterValue(stack_pointer)
 
-        self.writeToMemory(address, value)
+        self.stack.setUint16(address, value)
 
-        if address > self.MIN_STACK_POINTER: # Prevent the stack pointer from going out of bounds
+        if address > 0: # Prevent the stack pointer from going out of bounds
             address -= 2
             self.setRegisterValue(stack_pointer, address) # Stack grows upwards
 
@@ -64,11 +77,11 @@ class CPU:
         stack_pointer = self.getRegisterIndex('sp')
         address = self.getRegisterValue(stack_pointer)
 
-        if address < self.MAX_STACK_POINTER: # Prevent the stack pointer from going out of bounds
+        if address < self.SP_MAX: # Prevent the stack pointer from going out of bounds
             address += 2
             self.setRegisterValue(stack_pointer, address)
 
-        return self.readFromMemory(address)
+        return self.stack.getUint16(address)
 
     def jump(self, address) -> None:
         ip_index = self.getRegisterIndex('ip')
@@ -78,7 +91,7 @@ class CPU:
     def fetch(self) -> int:
         ip_reg = self.getRegisterIndex('ip')
         ip_value = self.getRegisterValue(ip_reg)
-        instruction = self.memory.getUint8(ip_value)
+        instruction = self.program.getUint8(ip_value)
         ip_value += 1
         self.setRegisterValue(ip_reg, ip_value)
         return instruction
@@ -86,7 +99,7 @@ class CPU:
     def fetchWord(self) -> int:
         ip_reg = self.getRegisterIndex('ip')
         ip_value = self.getRegisterValue(ip_reg)
-        instruction = self.memory.getUint16(ip_value)
+        instruction = self.program.getUint16(ip_value)
         ip_value += 2
         self.setRegisterValue(ip_reg, ip_value)
         return instruction
@@ -98,7 +111,7 @@ class CPU:
             rs = self.fetch()
 
             address = self.getRegisterValue(rs)
-            word_from_memory = self.readFromMemory(address)
+            word_from_memory = self.general.getUint16(address)
 
             self.setRegisterValue(rd, word_from_memory)
             return 1
@@ -109,7 +122,7 @@ class CPU:
             address = self.getRegisterValue(rd)
             word_to_memory = self.getRegisterValue(rs)
 
-            self.writeToMemory(address, word_to_memory)
+            self.general.setUint16(address, word_to_memory)
             return 1
         elif instruction == Instruction.SWP:
             r1 = self.fetch()
