@@ -17,7 +17,7 @@ class CPU:
         self.alu = ALU()
 
         self.registerNames = [
-            'ip', 'lr', 'ac',
+            'ip', 'ac',
             'r1', 'r2', 'r3', 'r4',
             'r5', 'r6', 'r7', 'r8',
             'sp', 'fp',
@@ -28,21 +28,25 @@ class CPU:
         self.registerDict = {self.registerNames[i]: i * 2 for i in range(len(self.registerNames))}
 
         self.SP_MAX = ((self.stack.size - 1) - 1)
+        self.stack_frame_size = 0
 
         self.setRegisterValue(self.getRegisterIndex('sp'), self.SP_MAX) # Stack pointer starts at last address, set address to 1 less than max, and subtract 1 for 0 indexing
+        self.setRegisterValue(self.getRegisterIndex('fp'), self.SP_MAX)
 
     def loadProgram(self, functions, byte_count):
         if (byte_count + len(functions)) >= self.program.size:
             raise Exception("Program size too large")
 
+        if "main" not in functions:
+            raise Exception("Program requires main function")
+
         program_index = 0
         for func in functions:
             self.labels[func] = program_index
             for byte in functions[func]:
-                print("{} : {}".format(type(byte), byte))
                 self.program.setUint8(program_index, int(byte))
                 program_index += 1
-            program_index += 1
+        self.setRegisterValue(self.getRegisterIndex('ip'), self.labels["main"])
 
     def getRegisterIndex(self, name) -> int:
         if name not in self.registerNames:
@@ -72,6 +76,7 @@ class CPU:
         if address > 0: # Prevent the stack pointer from going out of bounds
             address -= 2
             self.setRegisterValue(stack_pointer, address) # Stack grows upwards
+            self.stack_frame_size += 2
 
     def pop(self) -> int:
         stack_pointer = self.getRegisterIndex('sp')
@@ -80,11 +85,47 @@ class CPU:
         if address < self.SP_MAX: # Prevent the stack pointer from going out of bounds
             address += 2
             self.setRegisterValue(stack_pointer, address)
+            self.stack_frame_size -=2
 
         return self.stack.getUint16(address)
 
+    def pushState(self) -> None:
+        self.push(self.getRegisterValue(self.getRegisterIndex('r1')))
+        self.push(self.getRegisterValue(self.getRegisterIndex('r2')))
+        self.push(self.getRegisterValue(self.getRegisterIndex('r3')))
+        self.push(self.getRegisterValue(self.getRegisterIndex('r4')))
+        self.push(self.getRegisterValue(self.getRegisterIndex('r5')))
+        self.push(self.getRegisterValue(self.getRegisterIndex('r6')))
+        self.push(self.getRegisterValue(self.getRegisterIndex('r7')))
+        self.push(self.getRegisterValue(self.getRegisterIndex('r8')))
+        self.push(self.getRegisterValue(self.getRegisterIndex('ip')))
+        self.push(self.stack_frame_size + 2)
+
+        self.setRegisterValue(self.getRegisterIndex('fp'), self.getRegisterValue(self.getRegisterIndex('sp')))
+        self.stack_frame_size = 0
+
+    def popState(self) -> None:
+        stack_frame_address = self.getRegisterValue(self.getRegisterIndex('fp'))
+        self.setRegisterValue(self.getRegisterIndex('sp'), stack_frame_address)
+
+        self.stack_frame_size = self.pop()
+
+        self.setRegisterValue(self.getRegisterIndex('ip'), self.pop())
+        self.setRegisterValue(self.getRegisterIndex('r8'), self.pop())
+        self.setRegisterValue(self.getRegisterIndex('r7'), self.pop())
+        self.setRegisterValue(self.getRegisterIndex('r6'), self.pop())
+        self.setRegisterValue(self.getRegisterIndex('r5'), self.pop())
+        self.setRegisterValue(self.getRegisterIndex('r4'), self.pop())
+        self.setRegisterValue(self.getRegisterIndex('r3'), self.pop())
+        self.setRegisterValue(self.getRegisterIndex('r2'), self.pop())
+        self.setRegisterValue(self.getRegisterIndex('r1'), self.pop())
+
+        self.setRegisterValue(self.getRegisterIndex('fp'), (stack_frame_address - self.stack_frame_size))
+
     def jump(self, address) -> None:
         ip_index = self.getRegisterIndex('ip')
+
+        print("Jumping to address: {}".format(address))
 
         self.setRegisterValue(ip_index, address)
 
@@ -159,8 +200,27 @@ class CPU:
             
             return 1
         elif instruction == Instruction.JAL:
+            rs = self.fetch()
+            address = self.getRegisterValue(rs)
+
+            self.pushState()
+
+            self.jump(address)
+
             return 1
+        elif instruction == Instruction.JALI:
+            address = self.fetchWord()
+
+            self.pushState()
+
+            self.jump(address)
+
+            return 1
+
         elif instruction == Instruction.RET:
+
+            self.popState()
+
             return 1
 
         # Arithmetic
