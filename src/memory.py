@@ -1,9 +1,9 @@
-from tkinter import E
-
-
 class Memory:
-    def __init__(self, num_bytes):
-        self.memory = bytearray(num_bytes)
+    def __init__(self, size):
+        self.size = size
+        if self.size <= 0:
+            raise Exception("Memory must be greater than 0 bytes")
+        self.memory = bytearray(self.size)
 
     def addressExists(self, address):
         if address > len(self.memory) or address < 0:
