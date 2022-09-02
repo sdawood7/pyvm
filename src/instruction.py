@@ -8,8 +8,10 @@ class Instruction(IntEnum):
     PSH     = 0x30 # psh    rs          # Push contents of register source onto stack
     PSHI    = 0x31 # pshi   0x0000      # Push immediate value onto stack
     POP     = 0x32 # pop    rd          # Pop value at stack pointer and place into register destination
-    JAL     = 0x33 # jal    0x0000      # Jump to immediate value, save state of CPU on stack
-    RET     = 0x34 # ret                # Return from linked function, if called from main, halt the program
+    
+    JALI    = 0x40 # jali   0x0000      # Jump and link to immediate value, save state of CPU on stack
+    JAL     = 0x41 # jal    rs          # Jump and link to value in register source, save state of CPU on stack
+    RET     = 0x42 # ret                # Return from linked function
 
     ADD     = 0x50 # add    r1, r2      # Add two registers
     SUB     = 0x51 # sub    r1, r2      # Subtract first register by second register
